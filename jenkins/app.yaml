@@ -32,7 +32,7 @@ spec:
      name: jenkins-backend
      volumeMounts:
      - name: jenkins-home
-       mountPath: /var/jenkins_home
+       mountPath: /var/lib/jenkins
    volumes:
    - name: jenkins-home
      persistentVolumeClaim:
