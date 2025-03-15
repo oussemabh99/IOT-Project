@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{  url_for('static', filename='/styles.css')  }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>My Dashboard</h1>
+            <div class="header-right">
+                <p>Active Sessions: <span id="active-sessions">Loading...</span></p>
+                <a href="static/app.apk" download class="btn">Download APK</a>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <section class="dashboard">
+            <h2>Yesterday's Data</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>Temperature</h3>
+                    <p id="temperature">Loading...</p>
+                </div>
+                <div class="card">
+                    <h3>Humidity</h3>
+                    <p id="humidity">Loading...</p>
+                </div>
+            </div>
+        </section>
+        <script src="{{ url_for('static', filename='/script.js')}}"></script>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Flask App</p>
+    </footer>
+</body>
+</html>
