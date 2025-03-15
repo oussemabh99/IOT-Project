@@ -1,13 +1,13 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
 # dependencies
-mobile/node_modules/
+/mobile/node_modules/
 
 # Expo
-mobile/.expo/
-mobile/dist/
-mobile/web-build/
-monile/expo-env.d.ts
+/mobile/.expo/
+/mobile/dist/
+/mobile/web-build/
+/mobile/expo-env.d.ts
 
 #key-file
 /web/src/testapp.json
