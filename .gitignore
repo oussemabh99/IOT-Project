@@ -9,6 +9,8 @@ mobile/dist/
 mobile/web-build/
 monile/expo-env.d.ts
 
+#key-file
+/web/src/testapp.json
 # Native
 *.orig.*
 *.jks
