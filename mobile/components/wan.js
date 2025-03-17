@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-export default function WAN() {
+export default function WAN({ navigation }) {
   const [text, onChangeText] = useState('');
 
   const handleSubmit = () => {
     if (text) {
+      navigation.navigate('main');
       console.log('Firebase URL:', text); 
     } else {
       alert('Please enter a Firebase URL');
@@ -26,6 +27,8 @@ export default function WAN() {
             placeholderTextColor="#B0B0B0"
             keyboardType="url"
           />
+          
+
 
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Submit</Text>

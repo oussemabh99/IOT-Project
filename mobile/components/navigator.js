@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import WAN from './wan';
 import LAN from './lan';
 import Selection from './selection';
-
+import main from './main'
 const Stack = createStackNavigator();
 
 const Navigator = () => {
@@ -14,6 +14,7 @@ const Navigator = () => {
         <Stack.Screen name="Selection" component={Selection} />
         <Stack.Screen name="WAN" component={WAN} />
         <Stack.Screen name="LAN" component={LAN} />
+        <Stack.Screen name="main" component={main} />
       </Stack.Navigator>
     </NavigationContainer>
   );
