@@ -7,13 +7,13 @@ const Selection = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <Button
           title="LAN ACCESS"
-          onPress={() => navigation.navigate('LAN')} // Navigate to LAN screen
+          onPress={() => navigation.navigate('LAN')} 
         />
       </View>
       <View style={styles.buttonContainer}>
         <Button
           title="WAN ACCESS"
-          onPress={() => navigation.navigate('WAN')} // Navigate to WAN screen
+          onPress={() => navigation.navigate('main')} // Navigate to WAN screen
         />
       </View>
     </View>
