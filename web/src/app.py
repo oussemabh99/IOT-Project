@@ -1,12 +1,12 @@
 from flask import Flask, render_template,jsonify
-import random
+import call_firebase as callfb
+callfb.intialise()
 def get_real_time_data():
-    return {
-        "temperature": random.randint(20, 30),  
-        "humidity": random.randint(40, 60),     
-        "pressure": random.randint(1000, 1020), 
-        "windspeed": random.randint(5, 15)      
-    }
+    data=callfb.get_values()
+    if (data):
+        return(data)
+    else:
+        return('error')
 app = Flask(__name__)
 @app.route("/api")
 def value_return():

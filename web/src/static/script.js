@@ -12,8 +12,8 @@ function run() {
       })
       .then(data => {
         console.log(data);
-        temp.innerText=data.temperature
-        hum.innerText=data.humidity
+        temp.innerText=data.data.temperature.value
+        hum.innerText=data.data.humidité.value
       })
       .catch(error => {
         console.error('Error:', error);
