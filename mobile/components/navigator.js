@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const Navigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Error" >
+      <Stack.Navigator initialRouteName="Selection" >
         <Stack.Screen name="Selection" component={Selection} />
         <Stack.Screen name="LAN" component={LAN} />
         <Stack.Screen name="main" component={main} />

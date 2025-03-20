@@ -1,23 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Alert, SafeAreaView } from 'react-native';
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, get } from 'firebase/database';
+import { ref, get } from 'firebase/database';
+import { database } from "./firebaseLogin" 
 import Settings from './Settings';
-
-// Firebase Configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBUuf2vYC6RJRBYZVXjqCEAgXG7t2oR7go",
-  authDomain: "testapp-f4189.firebaseapp.com",
-  databaseURL: "https://testapp-f4189-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "testapp-f4189",
-  storageBucket: "testapp-f4189.firebasestorage.app",
-  messagingSenderId: "213631782298",
-  appId: "1:213631782298:web:83a6d6c4bcd5c059a8fe23",
-  measurementId: "G-559CBLQ75C",
-};
-
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
 
 const main = () => {
   const [temperature, setTemperature] = useState(null);
@@ -164,4 +149,3 @@ const styles = StyleSheet.create({
 });
 
 export default main;
-
