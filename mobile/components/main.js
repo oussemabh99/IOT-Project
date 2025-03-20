@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, Alert, SafeAreaView } from 'react-native';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get } from 'firebase/database';
+import Settings from './Settings';
 
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBUuf2vYC6RJRBYZVXjqCEAgXG7t2oR7go",
   authDomain: "testapp-f4189.firebaseapp.com",
@@ -18,10 +20,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const main = () => {
-  const [humidity, setHumidity] = useState(null);
   const [temperature, setTemperature] = useState(null);
-  const [minHumidity, setMinHumidity] = useState('');
-  const [maxHumidity, setMaxHumidity] = useState('');
   const [minTemperature, setMinTemperature] = useState('');
   const [maxTemperature, setMaxTemperature] = useState('');
 
@@ -29,14 +28,9 @@ const main = () => {
     try {
       const dbRef = ref(database, 'data');
       const snapshot = await get(dbRef);
-
       if (snapshot.exists()) {
         const data = snapshot.val();
-
-        const humidityData = data.humidité;
         const temperatureData = data.temperature;
-
-        setHumidity(humidityData.value);
         setTemperature(temperatureData.value);
       } else {
         console.log('No data available');
@@ -48,62 +42,39 @@ const main = () => {
 
   useEffect(() => {
     fetchData();
-
     const intervalId = setInterval(() => {
       fetchData();
-    }, 10000);
+    }, 10000); // Fetch data every 10 seconds
 
-    return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId); // Clean up interval on unmount
   }, []);
 
   const applyLimits = () => {
-    Alert.alert("Limits Applied", `Humidity: ${minHumidity} - ${maxHumidity} %\nTemperature: ${minTemperature} - ${maxTemperature} °C`);
+    if (minTemperature && maxTemperature) {
+      Alert.alert("Limits Applied", `Temperature: ${minTemperature} °C - ${maxTemperature} °C`);
+    } else {
+      Alert.alert("Please enter both temperature values.");
+    }
   };
 
   return (
-    <View style={styles.container}>
-      {/* Config Navigation Bar */}
+    <SafeAreaView style={styles.container}>
       <View style={styles.navBar}>
-        <TouchableOpacity onPress={() => Alert.alert("Settings", "Open settings")} style={styles.navButton}>
-          <Text style={styles.navButtonText}>Settings</Text>
-        </TouchableOpacity>
+        <Settings />
       </View>
 
-      {/* Main Content */}
       <View style={styles.content}>
         <Text style={styles.title}>Sensor Data</Text>
-        {humidity !== null && temperature !== null ? (
-          <>
-            <Text style={styles.sensorText}>Humidity: {humidity} %</Text>
-            <Text style={styles.sensorText}>Temperature: {temperature} °C</Text>
-          </>
+
+        {temperature !== null ? (
+          <Text style={styles.sensorText}>Temperature: {temperature} °C</Text>
         ) : (
           <Text style={styles.loadingText}>Loading data...</Text>
         )}
 
-        {/* Configuration Inputs */}
-        <View style={styles.configSection}>
-          <Text style={styles.configText}>Set Limits</Text>
-          <Text style={styles.inputLabel}>Energy Range:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Min Energy"
-            keyboardType="numeric"
-            value={minTemperature}
-            onChangeText={setMinTemperature}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Max Energy"
-            keyboardType="numeric"
-            value={maxTemperature}
-            onChangeText={setMaxTemperature}
-          />
-
-          <Button title="Apply Limits" onPress={applyLimits} />
-        </View>
+        
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -160,6 +131,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center',
+  },
+  inputWrapper: {
+    marginBottom: 20,
   },
   inputLabel: {
     fontSize: 16,
@@ -175,6 +150,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#fff',
   },
+  applyButton: {
+    backgroundColor: '#28a745',
+    paddingVertical: 12,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  applyButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+  },
 });
 
 export default main;
+
