@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Alert, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { ref, get } from 'firebase/database';
-import { database } from "./firebaseLogin" 
+import { database } from './firebaseLogin';
 import Settings from './Settings';
 
 const main = () => {
@@ -25,6 +25,32 @@ const main = () => {
     }
   };
 
+  const getConfig = async () => {
+    try {
+      const dbRef = ref(database, 'config');
+      const snapshot = await get(dbRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setMinTemperature(data.min);
+        setMaxTemperature(data.max);
+      } else {
+        console.log('No data available');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getConfig();
+    const intervalId = setInterval(() => {
+      getConfig();
+      console.log(minTemperature);
+    }, 10000); // Fetch data every 10 seconds
+
+    return () => clearInterval(intervalId); // Clean up interval on unmount
+  }, []);
+
   useEffect(() => {
     fetchData();
     const intervalId = setInterval(() => {
@@ -33,14 +59,6 @@ const main = () => {
 
     return () => clearInterval(intervalId); // Clean up interval on unmount
   }, []);
-
-  const applyLimits = () => {
-    if (minTemperature && maxTemperature) {
-      Alert.alert("Limits Applied", `Temperature: ${minTemperature} °C - ${maxTemperature} °C`);
-    } else {
-      Alert.alert("Please enter both temperature values.");
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,8 +74,11 @@ const main = () => {
         ) : (
           <Text style={styles.loadingText}>Loading data...</Text>
         )}
+      </View>
 
-        
+      {/* Image is pushed below the data */}
+      <View style={styles.imageContainer}>
+        <Image source={require('../assets/icon.png')} style={styles.image} />
       </View>
     </SafeAreaView>
   );
@@ -73,78 +94,38 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
   },
-  navButton: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#fff',
-  },
-  navButtonText: {
-    fontSize: 16,
-    color: '#007BFF',
-  },
   content: {
     padding: 20,
     flex: 1,
+    marginTop: 20, // Push content to the top with marginTop
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 20,
+    marginBottom: 10,
+    textAlign: 'center', // Center the title
   },
   sensorText: {
     fontSize: 18,
     marginBottom: 10,
     color: '#333',
+    textAlign: 'center', // Center the sensor text
   },
   loadingText: {
     fontSize: 18,
     color: '#888',
+    textAlign: 'center', // Center the loading text
   },
-  configSection: {
-    marginTop: 20,
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
+  imageContainer: {
+    justifyContent: 'center', // Center the image vertically
+    alignItems: 'center', // Center the image horizontally
+    marginTop: 20, // Add space between the sensor data and the image
   },
-  configText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  inputWrapper: {
-    marginBottom: 20,
-  },
-  inputLabel: {
-    fontSize: 16,
-    marginVertical: 5,
-    color: '#333',
-  },
-  input: {
-    height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: '#fff',
-  },
-  applyButton: {
-    backgroundColor: '#28a745',
-    paddingVertical: 12,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  applyButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
+  image: {
+    width: 150,  // Set the desired width
+    height: 150, // Set the desired height
+    resizeMode: 'contain', // Ensures the image scales properly
   },
 });
 
