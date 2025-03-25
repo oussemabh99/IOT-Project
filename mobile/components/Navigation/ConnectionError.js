@@ -8,7 +8,7 @@ const ConnectionError = ({ route,navigation }) => {
 
       
       <Image 
-        source={require('../assets/connection.png')} 
+        source={require('../../assets/connection.png')} 
         style={styles.image} 
       />
 

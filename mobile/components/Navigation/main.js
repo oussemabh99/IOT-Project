@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { ref, get } from 'firebase/database';
-import { database } from './firebaseLogin';
-import Settings from './Settings';
+import { database } from '../firebaseTools/firebaseLogin';
+import Settings from './subcomp/Settings';
 
-const main = () => {
+const Main = () => {
   const [temperature, setTemperature] = useState(null);
   const [minTemperature, setMinTemperature] = useState('');
   const [maxTemperature, setMaxTemperature] = useState('');
@@ -78,7 +78,7 @@ const main = () => {
 
       {/* Image is pushed below the data */}
       <View style={styles.imageContainer}>
-        <Image source={require('../assets/icon.png')} style={styles.image} />
+        <Image source={require('../../assets/icon.png')} style={styles.image} />
       </View>
     </SafeAreaView>
   );
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default main;
+export default Main;

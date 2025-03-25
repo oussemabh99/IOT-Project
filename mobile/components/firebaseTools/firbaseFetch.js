@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { database } from "./firebaseLogin";
+import { database } from "./tools/firebaseLogin";
 import { ref, get } from "firebase/database";
 
 const useDisplayConfig = () => {

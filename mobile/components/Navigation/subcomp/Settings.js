@@ -1,15 +1,61 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View,TextInput,TouchableOpacity} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import { ref, get,update } from 'firebase/database';
+import { database } from '../../firebaseTools/firebaseLogin';
+
+
+
 
 const Settings = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [humidity, setHumidity] = useState(null);
-  const [temperature, setTemperature] = useState(null);
-  const [minHumidity, setMinHumidity] = useState('');
-  const [maxHumidity, setMaxHumidity] = useState('');
   const [minTemperature, setMinTemperature] = useState('');
   const [maxTemperature, setMaxTemperature] = useState('');
+  async function updateFirebase(tempmin, tempmax) {
+    if (tempmin > tempmax) {
+      console.log("min must be < max");
+    } else {
+      const dbRef = ref(database, 'config');
+  
+      try {
+        
+        await update(dbRef, {
+          min: tempmin,
+          max: tempmax
+        });
+  
+        console.log("Update successful");
+  
+        
+        setModalVisible(!modalVisible);
+      } catch (error) {
+        console.log("Error updating database: ", error);
+      }
+    }
+  }
+  const getConfig = async () => {
+    try {
+      const dbRef = ref(database, 'config');
+      const snapshot = await get(dbRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setMinTemperature(data.min);
+        setMaxTemperature(data.max);
+      } else {
+        console.log('No data available');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getConfig();
+    const intervalId =  () => {
+      getConfig();
+      console.log(minTemperature);
+    }
+  }, []);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.centeredView}>
@@ -22,29 +68,29 @@ const Settings = () => {
             setModalVisible(!modalVisible);
           }}>
           <View style={styles.configSection}>
-          <Text style={styles.configText}>Set Temperature Range</Text>
+          <Text style={styles.configText}>Set Energy Range</Text>
           <View style={styles.inputWrapper}>
-            <Text style={styles.inputLabel}>Min Temp</Text>
+            <Text style={styles.inputLabel}>Min Energy</Text>
             <TextInput
               style={styles.input}
-              placeholder="Min Temperature"
+              placeholder={minTemperature}
               keyboardType="numeric"
               value={minTemperature}
               onChangeText={setMinTemperature}
             />
           </View>
           <View style={styles.inputWrapper}>
-            <Text style={styles.inputLabel}>Max Temp</Text>
+            <Text style={styles.inputLabel}>Max Energy</Text>
             <TextInput
               style={styles.input}
-              placeholder="Max Temperature"
+              placeholder={maxTemperature}
               keyboardType="numeric"
               value={maxTemperature}
               onChangeText={setMaxTemperature}
             />
           </View>
 
-          <TouchableOpacity style={styles.applyButton} onPress={() => setModalVisible(!modalVisible)}>
+          <TouchableOpacity style={styles.applyButton} onPress={()=>updateFirebase(minTemperature, maxTemperature)}>
             <Text style={styles.applyButtonText}>Apply Limits</Text>
           </TouchableOpacity>
         </View>

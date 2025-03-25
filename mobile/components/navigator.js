@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import LAN from './lan';
-import Selection from './selection';
-import main from './main'
-import ConnectionError from './ConnectionError';
+import LAN from './Navigation/lan';
+import Selection from './Navigation/selection';
+import main from './Navigation/main'
+import ConnectionError from './Navigation/ConnectionError';
 const Stack = createStackNavigator();
 
 const Navigator = () => {
