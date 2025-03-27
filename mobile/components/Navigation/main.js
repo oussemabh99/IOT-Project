@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { ref, get } from 'firebase/database';
 import { database } from '../firebaseTools/firebaseLogin';
+import { Card } from 'react-native-paper';  // Import Card component from react-native-paper
 import Settings from './subcomp/Settings';
+import SetImage from './subcomp/Setimage';  // Assuming SetImage is your component to render images
 
 const Main = () => {
   const [temperature, setTemperature] = useState(null);
@@ -45,7 +47,6 @@ const Main = () => {
     getConfig();
     const intervalId = setInterval(() => {
       getConfig();
-      console.log(minTemperature);
     }, 10000); // Fetch data every 10 seconds
 
     return () => clearInterval(intervalId); // Clean up interval on unmount
@@ -69,16 +70,14 @@ const Main = () => {
       <View style={styles.content}>
         <Text style={styles.title}>Sensor Data</Text>
 
-        {temperature !== null ? (
-          <Text style={styles.sensorText}>Temperature: {temperature} °C</Text>
-        ) : (
-          <Text style={styles.loadingText}>Loading data...</Text>
-        )}
-      </View>
-
-      {/* Image is pushed below the data */}
-      <View style={styles.imageContainer}>
-        <Image source={require('../../assets/icon.png')} style={styles.image} />
+        <Card style={styles.card}>
+          <View style={styles.cardContent}>
+            <Text style={styles.sensorText}>
+              {temperature !== null ? `Temperature: ${temperature} °C` : 'Loading data...'}
+            </Text>
+            <SetImage temp={temperature} min={minTemperature} max={maxTemperature} />
+          </View>
+        </Card>
       </View>
     </SafeAreaView>
   );
@@ -106,16 +105,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center', // Center the title
   },
+  card: {
+    marginTop: 20,
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    elevation: 5, // Adds shadow for a card effect
+  },
+  cardContent: {
+    alignItems: 'center',
+  },
   sensorText: {
     fontSize: 18,
     marginBottom: 10,
     color: '#333',
     textAlign: 'center', // Center the sensor text
-  },
-  loadingText: {
-    fontSize: 18,
-    color: '#888',
-    textAlign: 'center', // Center the loading text
   },
   imageContainer: {
     justifyContent: 'center', // Center the image vertically
@@ -130,3 +134,4 @@ const styles = StyleSheet.create({
 });
 
 export default Main;
+

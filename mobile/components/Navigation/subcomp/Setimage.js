@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Text, TouchableOpacity, Card,Image } from 'react-native';
-const SetImage = (temp,max,min) => {
-  if (min!=null && max!=null){
-    if (temp<min)
-      {
-       const path='../assets/' 
-      }
-    if (temp>max)
-      {
-    
-      }
+import React from 'react';
+import { StyleSheet, View, Image } from 'react-native';
+import { Card } from 'react-native-paper'; // Import if you're using react-native-paper
+
+const SetImage = (props) => {
+  let imageSource = require('../../../assets/state/no-data.png'); // Default image
+
+  if (props.min != null && props.max != null && props.temp != null) {
+    if (props.temp > props.min && props.temp < props.max) {
+      imageSource = require('../../../assets/state/good.png');
+    } else {
+      imageSource = require('../../../assets/state/bad.png');
+    }
   }
-  
+
   return (
-    <View>
-       <Card>
-        
-      </Card>
+    <View >
+      
+        <Image source={imageSource}  />
+      
     </View>
   );
-  };
-  
-  export default SetImage;
+};
+
+
+export default SetImage;
+
   
