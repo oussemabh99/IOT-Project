@@ -1,0 +1,4 @@
+#broker = 'localhost'
+#port = 1883
+#topic = "test_topic"
+python3 subscriber <ip adress> <port> <topic-name>
