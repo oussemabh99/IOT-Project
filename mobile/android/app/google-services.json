@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "213631782298",
+    "firebase_url": "https://testapp-f4189-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "testapp-f4189",
+    "storage_bucket": "testapp-f4189.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213631782298:android:0b9e848aff8a2158a8fe23",
+        "android_client_info": {
+          "package_name": "test.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFx_hm74DTnJAynOJ_Hyg4fgMT-jlL_CE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
