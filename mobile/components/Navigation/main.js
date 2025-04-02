@@ -10,7 +10,6 @@ const Main = () => {
   const [temperature, setTemperature] = useState(null);
   const [minTemperature, setMinTemperature] = useState('');
   const [maxTemperature, setMaxTemperature] = useState('');
-
   const fetchData = async () => {
     try {
       const dbRef = ref(database, 'data');
