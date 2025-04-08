@@ -1,7 +1,8 @@
 let temp=document.getElementById('temperature');
 let hum =document.getElementById('humidity');
 function run() {
-    const apiUrl = 'http://127.0.0.1:5000/api';
+  
+    const apiUrl = `${window.location.href}/api`;
   
     fetch(apiUrl)
       .then(response => {
@@ -12,8 +13,8 @@ function run() {
       })
       .then(data => {
         console.log(data);
-        temp.innerText=data.temperature
-        hum.innerText=data.humidity
+        temp.innerText=data.data.temperature.value
+        hum.innerText=data.data.humidité.value
       })
       .catch(error => {
         console.error('Error:', error);
