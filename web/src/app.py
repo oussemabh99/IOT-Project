@@ -1,7 +1,11 @@
 from flask import Flask, render_template,jsonify,request
 import call_firebase as callfb
 from flask_cors import CORS
-key=""
+import api
+import base64
+def get_token():
+    with open('/var/run/secrets/kubernetes.io/serviceaccount/token', 'r') as f:
+        return f.read().strip()
 callfb.intialise()
 def get_real_time_data():
     data=callfb.get_values()
@@ -23,6 +27,8 @@ def notification():
     if request.method == 'POST':
            request_data = request.get_json()
            key = request_data["key"]
+           key = base64.b64encode(key.encode()).decode()
+           api.send_key(key,get_token)
            return jsonify({"status": "success", "key": key}), 200 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
