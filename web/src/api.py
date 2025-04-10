@@ -9,5 +9,4 @@ def send_key(key,token):
             }
     data1= {"data":{"key": key}}
     responce=requests.patch(url,headers=headers,json=data1, verify=False)
-    var = json.loads(responce.text)
-    key=var['result']
+    return(responce)

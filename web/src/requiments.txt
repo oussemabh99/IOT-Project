@@ -1,0 +1,8 @@
+flask 
+pytest 
+flask_cors 
+firebase_admin
+datetime
+requests
+
+
