@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Button } from 'react-native';
 import  { usePushNotifications }  from '../notifications/expo-notif';
 import { StatusBar } from "expo-status-bar";
-import { hautTemp } from '../notifications/api-send';
 const Selection = ({ navigation }) => {
   const { expoPushToken, notification } = usePushNotifications();
   const data = JSON.stringify(notification, undefined, 2);
@@ -11,7 +10,7 @@ const Selection = ({ navigation }) => {
       <Text style={styles.paragraph}>Select your connection type:</Text>
       <View style={styles.buttonContainer}>
         <Button
-          title="LAN ACCESS"
+          title="Set Notification Server"
           onPress={() => navigation.navigate('LAN')} 
         />
       </View>

@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-export default function LAN({ navigation }) {
-  const [text, onChangeText] = useState('');
+import  { usePushNotifications }  from '../notifications/expo-notif';
+import { send_key } from '../notifications/api-send';
 
-  const handleSubmit = () => {
+export default function LAN({ navigation }) {
+  const { expoPushToken, notification } = usePushNotifications();
+  const data = JSON.stringify(notification, undefined, 2);
+  const key = `${expoPushToken?.data}`
+  const [text, onChangeText] = useState('');
+  const handleSubmit = async () => {
     if (text) {
-      navigation.navigate('main');
-      console.log('WEB Server URL:', text); 
+      try {
+        const x = await send_key(key, text);
+        console.log("send_key result:", x);
+  
+        if (x === true) {
+          navigation.navigate('Selection');
+        } else {
+          alert("Invalid key or response from server.");
+        }
+      } catch (error) {
+        console.error("Error sending key:", error);
+        alert("Something went wrong.");
+      }
     } else {
       alert('Please enter the web server URL');
     }
