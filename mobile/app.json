@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "greedy-red-turkish-delight",
+    "name": "firebase-mobile-project",
     "slug": "snack-c8230634-dd48-42f9-acfb-4c68b6b85240",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,10 +19,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.oussemabh99.snackc8230634dd4842f9acfb4c68b6b85240",
+      "googleServiceFile":"./android/app/google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1f26f5ad-4bc6-4fde-b36f-d10716ba22f8"
+      }
     }
   }
 }
