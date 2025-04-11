@@ -30,4 +30,33 @@ fetch(apiUrl, requestOptions)
 ('Error:', error);
   });
 }
-export {hautTemp}
+function send_key(key, server) {
+  const apiUrl = `${server}/notifications`;
+  const data = { key };
+
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  };
+
+  return fetch(apiUrl, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json(); 
+    })
+    .then(data => {
+      console.log("Response:", JSON.stringify(data, null, 2));
+      return true;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      return false;
+    });
+}
+
+export {hautTemp,send_key}
