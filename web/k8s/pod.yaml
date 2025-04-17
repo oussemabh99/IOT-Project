@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+  labels:
+    kind: flask
+  namespace: devops
+spec:
+  containers:
+  - image: localhost:5000/oussema/webapp:v1
+    name: webapp
+  serviceAccountName: webapp  
+  imagePullSecrets:
+  - name: registrypullsecret
