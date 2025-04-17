@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 import datetime 
-cred = credentials.Certificate("testapp.json")
+cred = credentials.Certificate("auth/testapp.json")
 def intialise():
     firebase_admin.initialize_app(cred, {"databaseURL": "https://testapp-f4189-default-rtdb.europe-west1.firebasedatabase.app"})
 
