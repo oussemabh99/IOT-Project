@@ -1,16 +1,13 @@
 # python 3.11
 
 import random
-import sys
+import os
 from paho.mqtt import client as mqtt_client
-
-
-#broker = 'localhost'
-#port = 1883
-#topic = "test_topic"
-broker= sys.argv[1]
-port= sys.argv[2]
-topic= sys.argv[3]
+import call_firebase as cf
+cred=cf.intialise()
+topic = os.environ["TOPIC_NAME"]
+broker = os.environ["BROKER_HOSTNAME"]
+port = int(os.environ['BROKER_PORT'])
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
 # username = 'emqx'
@@ -34,6 +31,7 @@ def connect_mqtt() -> mqtt_client:
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        cf.set_values(cred,)
 
     client.subscribe(topic)
     client.on_message = on_message

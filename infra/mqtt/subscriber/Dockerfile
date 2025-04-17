@@ -1,9 +1,9 @@
-FROM python
+FROM python:3.12.9
 RUN WORKDIR /app/
 ENV BROKER_HOSTNAME 
-ENV PORT  
+ENV BROKER_PORT  
 ENV TOPIC_NAME
 ADD . .
 RUN pip3 install -r requiment.txt
-ENTRYPOINT ["python3","subscriber.py","$BROKER_HOSTNAME","$PORT","$TOPIC_NAME"]
+ENTRYPOINT ["python3","subscriber.py"]
 
