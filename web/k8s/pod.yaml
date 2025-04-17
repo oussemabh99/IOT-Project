@@ -7,8 +7,18 @@ metadata:
   namespace: devops
 spec:
   containers:
-  - image: localhost:5000/oussema/webapp:v1
+  - image: localhost:5000/oussema/webapp:v3
     name: webapp
+    volumeMounts:
+    - name: firebase-auth
+      mountPath: /app/auth
+      readOnly: true
   serviceAccountName: webapp  
   imagePullSecrets:
   - name: registrypullsecret
+  volumes:
+  - name: firebase-auth
+    secret:
+      secretName: firebase-secret
+      
+    
