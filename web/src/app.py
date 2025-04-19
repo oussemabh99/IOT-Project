@@ -23,6 +23,9 @@ def value_return():
 @app.route("/")
 def index():
     return render_template('dashboard.html')  
+@app.route("/dashboard")
+def dashbord():
+    return render_template('dash.html')
 @app.route("/notifications",methods=['POST'])
 def notification():
     if request.method == 'POST':
