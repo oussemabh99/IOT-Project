@@ -25,7 +25,7 @@ const SetImage = (props) => {
 
   useEffect(() => {
     if (!actual_status) {
-      hautTemp(data2,props.temp,props.min,props.max);
+      hautTemp('ExponentPushToken[CeBodAAlWtwfJEN5Z1teXV]',props.temp,props.min,props.max);
     }
   }, [actual_status]);
 

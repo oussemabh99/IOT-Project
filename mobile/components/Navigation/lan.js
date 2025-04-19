@@ -7,7 +7,7 @@ import { send_key } from '../notifications/api-send';
 export default function LAN({ navigation }) {
   const { expoPushToken, notification } = usePushNotifications();
   const data = JSON.stringify(notification, undefined, 2);
-  const key = `${expoPushToken?.data}`
+  const key = 'ExponentPushToken[9QwYAoAcByS592GM6iB_VA]'
   const [text, onChangeText] = useState('');
   const handleSubmit = async () => {
     if (text) {
@@ -34,7 +34,6 @@ export default function LAN({ navigation }) {
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.title}>Enter WEB Server URL</Text>
-          <Text style={styles.title}>{key}</Text>
           <TextInput
             style={[styles.input, text ? styles.inputFocused : null]}
             onChangeText={onChangeText}
