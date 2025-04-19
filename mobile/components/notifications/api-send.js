@@ -1,10 +1,24 @@
-function hautTemp(){
+function hautTemp(token,temp,min,max){
     const apiUrl = "https://exp.host/--/api/v2/push/send";
-const data = {
-    "to": "ExponentPushToken[9QwYAoAcByS592GM6iB_VA]",
-    "title":"hello",
-    "body": "world"
-  };
+    const data = {
+      to: token,
+      title: "⚡ Alerte Énergie",
+      body: `🔋 Niveau actuel : ${temp}. Plage optimale : ${min} - ${max}.`,
+      sound: "default", // Son par défaut
+      badge: 1,         // Badge sur l'icône de l'application (iOS)
+      priority: "high", // Priorité haute (Android)
+      data: {
+        alertType: "energy",
+        currentLevel: temp,
+        optimalRange: { min, max },
+        timestamp: new Date().toISOString()
+      },
+      androidChannelId: "default", // Doit être créé côté app
+      icon: "../../assets/iconapp.jpg", // Icône personnalisée (mettre un lien HTTPS pour Android)
+      mutableContent: true, // Permet de modifier la notification côté client (iOS rich push)
+      categoryId: "energy-alert", // Pour gérer des actions personnalisées (iOS/Android)
+    };
+    
 
 const requestOptions = {
   method: 'POST',

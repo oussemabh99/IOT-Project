@@ -1,8 +1,13 @@
 import { React, useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
 import { hautTemp } from '../../notifications/api-send';
-
+import  { usePushNotifications }  from '../../notifications/expo-notif';
+ 
 const SetImage = (props) => {
+  const { expoPushToken, notification } = usePushNotifications();
+  const data = JSON.stringify(notification, undefined, 2);
+  console.log (`Token: ${expoPushToken?.data} ??`)
+  const data2= expoPushToken?.data
   const [actual_status, setStatus] = useState(true);
   const [imageSource, setImageSource] = useState(require('../../../assets/state/no-data.png'));
 
@@ -20,7 +25,7 @@ const SetImage = (props) => {
 
   useEffect(() => {
     if (!actual_status) {
-      hautTemp();
+      hautTemp(data2,props.temp,props.min,props.max);
     }
   }, [actual_status]);
 
