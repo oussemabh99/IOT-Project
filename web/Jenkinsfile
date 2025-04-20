@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+
+    environment {
+        REGISTRY = "localhost:5000/oussema"
+        IMAGE_NAME = "webapp"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        VERSION = "2"
+        FULL_IMAGE_NAME = "${REGISTRY}/${IMAGE_NAME}:V${VERSION}.${IMAGE_TAG}"
+        DEPLOYMENT_API = "https://127.0.0.1:6443/apis/apps/v1/namespaces/devops/deployments/webapp"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/loladev9898/web-iot/'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t ${FULL_IMAGE_NAME} web/"
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-cred-id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh """
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin ${REGISTRY}
+                        docker push ${FULL_IMAGE_NAME}
+                    """
+                }
+            }
+        }
+
+        stage('Update Deployment') {
+            steps {
+                withCredentials([string(credentialsId: 'k8s-token-id', variable: 'K8S_TOKEN')]) {
+                    script {
+                        def patchJson = """
+                        {
+                          "spec": {
+                            "template": {
+                              "spec": {
+                                "containers": [{
+                                  "name": "webapp",
+                                  "image": "${FULL_IMAGE_NAME}"
+                                }]
+                              }
+                            }
+                          }
+                        }
+                        """
+                        writeFile file: 'patch.json', text: patchJson
+
+                        sh """
+                            curl -k -X PATCH \\
+                              -H "Authorization: Bearer $K8S_TOKEN" \\
+                              -H "Content-Type: application/strategic-merge-patch+json" \\
+                              --data-binary @patch.json \\
+                              ${DEPLOYMENT_API}
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
